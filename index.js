@@ -1,7 +1,9 @@
-const express = require ('express');
-const morgan = require('morgan');
-const fs = require('fs'); //import built-in node modules fs and path
-const path = require('path');
+const express = require ('express'),
+    morgan = require('morgan'),
+    fs = require('fs'), //import built-in node modules fs and path
+    path = require('path'),
+    uuid = require('uuid');
+
 const app = express(); 
 //'log.txt' file created in root
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {flags: 'a'});
@@ -28,6 +30,10 @@ let movies = [
     {
         id: 1, 
         title: 'E.T.',
+        genre: {
+            Name:'Children\'s',
+            genreDescription: 'Movies with family-friendly content.'
+        },
         director: {
             name: 'Steven Spielberg',
             birthYear: 1946,
@@ -41,8 +47,12 @@ let movies = [
     {
         id: 2,
         title: 'Hook',
+        genre: {
+            Name:'Adventure',
+            genreDescription: 'Movies with action and a moral lesson.'
+        },
         director: {
-            name: 'StevenSpielberg',
+            name: 'Steven Spielberg',
             birthYear: 1946,
             deathYear: 'N/A',
             bio: 'Steven Allan Spielberg was born December 18, 1946, in Cincinnati, Ohio. He started making amateur films while in his teens and later studied film at California State University, Long Beach. Among his award winning, blockbuster films are the Indiana Jones original trilogy (1981-89), The Color Purple (1985), Jurassic Park (1993), Schindler\'s List (1993), Saving Private Ryan (1998), Minority Report (2002), Amistad (1997), War Horse (2011), and the musical West Side Story(2021).'
@@ -54,6 +64,10 @@ let movies = [
     {
         id: 3,
         title: 'Casper',
+        genre: {
+            Name:'Comedy',
+            genreDescription: 'Movies made to be humorous and engaging.'
+        },
         director: {
             name: 'Brad Siberling',
             birthYear: '1963',
@@ -67,6 +81,10 @@ let movies = [
     {
         id: 4,
         title: 'Home Alone',
+        genre: {
+            Name:'Comedy',
+            Description: 'Movies made to be humorous and engaging.'
+        },
         director: {
             name: 'Chris Columbus',
             birthYear: '1958',
@@ -80,6 +98,10 @@ let movies = [
     {
         id: 5,
         title: 'The Lion King',
+        genre: {
+            Name:'Children\'s',
+            genreDescription: 'Movies with family-friendly content.'
+        },
         director: {
             name: 'Roger Allers, Rob Minkoff',
             birthYear: '1949, 1962',
@@ -93,6 +115,10 @@ let movies = [
     {
         id: 6,
         title: 'Clueless',
+        genre: {
+            Name:'Teen',
+            genreDescription: 'Movies with a rating of PG13 and above that offer insight into the young adult experience, usually featuring some kind of coming-of-age lesson.'
+        },
         director: {
             name: 'Amy Heckerling',
             birthYear: '1954',
@@ -105,6 +131,39 @@ let movies = [
     } 
 ];
 
+//Sample Array 'users'
+let users = [
+    {
+        id: 1,
+        username: 'disneylover@gmail.com',
+        password: 'MinneMouse123',
+        favoriteList: ''
+    },
+    {
+        id: 2,
+        username: 'adventurous1@yahoo.com',
+        password: '123LetsGo',
+        favoriteList: ''
+    },
+    {
+        id: 3,
+        username: 'pamiam@me.com',
+        password: 'BookRLife',
+        favoriteList: ''
+    },
+    {
+        id: 4,
+        username: 'toripines33@gmail.com',
+        password: 'Climbing2023',
+        favoriteList: ''
+    },
+    {
+        id: 5,
+        username: 'dancingqueen@gmail.com',
+        password: 'MamaMia2011',
+        favoriteList: ''
+    }
+];
 
 
 //MOVIE ENDPOINTS
@@ -120,15 +179,51 @@ app.get('/movies/:title', (req,res) => {
     }));
 });
 
+//GET movie genres
+app.get('/movies/genre/:genreName', (req,res) => {
+    // res.json(movies.find((movies) => {
+    //     return movies.genre === req.params.Name
+    // }));
+    const {genreName}= req.params;
+    const genres = movies.find(movies => movies.genre.Name === genreName).genre;
+
+    if (genres) {
+        res.status(200).json(genres);
+    } else {
+        res.status(400).send('No such genre');
+    }
+});
+
 //GET data about a dircetor by name
-app.get('/movies/:director/:name', (req,res) =>{
+app.get('/movies/director/:name', (req,res) =>{
     res.json(movies.find((movies) => {
-        return movies.director === req.params.name
+        return movies.director.name === req.params.name
     }));
 });
 
 
 //USER ENDPOINTS
+//POST new user
+app.post('/users', (req,res) => {
+    let newUser = req.body;
+
+    if(!newUser.username) {
+        const message = 'Missing name is request body';
+        res.status(400).send(message);
+    } else {
+        newUser.id = uuid.v4();
+        users.push(newUser);
+        res.status(200).send(newUser);
+    }
+});
+
+//PUT user info (username)
+
+//PUT movie to user favoriteList
+
+//DELETE movie from user favoriteList
+
+//DELETE user, return text that user email has been removed
 
 //Parser/Handling
 const bodyParser = require('body-parser'),
