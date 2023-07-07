@@ -7,11 +7,18 @@ const express = require ('express'),
 const app = express(); 
 //'log.txt' file created in root
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {flags: 'a'});
+//Parser/Handling
+const bodyParser = require('body-parser'),
+    methodOverride = require('method-override');
 
+app.use(bodyParser.urlencoded({
+        extended: true
+    }));
+app.use(bodyParser.json());
+app.use(methodOverride());
 //setup Logger
 app.use(morgan('combined', {stream: accessLogStream}));
 app.use(express.static('public')); //routes all requests for static files to their reapective files on the server
-
 
 //Home Page
 app.get('/', (req,res) => {
@@ -29,7 +36,7 @@ app.get('/documentation.html', (req,res) => {
 let movies = [
     {
         id: 1, 
-        title: 'E.T.',
+        Title: 'E.T.',
         genre: {
             Name:'Children\'s',
             genreDescription: 'Movies with family-friendly content.'
@@ -46,7 +53,7 @@ let movies = [
     },
     {
         id: 2,
-        title: 'Hook',
+        Title: 'Hook',
         genre: {
             Name:'Adventure',
             genreDescription: 'Movies with action and a moral lesson.'
@@ -63,7 +70,7 @@ let movies = [
     },
     {
         id: 3,
-        title: 'Casper',
+        Title: 'Casper',
         genre: {
             Name:'Comedy',
             genreDescription: 'Movies made to be humorous and engaging.'
@@ -80,7 +87,7 @@ let movies = [
     },
     {
         id: 4,
-        title: 'Home Alone',
+        Title: 'Home Alone',
         genre: {
             Name:'Comedy',
             Description: 'Movies made to be humorous and engaging.'
@@ -97,7 +104,7 @@ let movies = [
     },
     {
         id: 5,
-        title: 'The Lion King',
+        Title: 'The Lion King',
         genre: {
             Name:'Children\'s',
             genreDescription: 'Movies with family-friendly content.'
@@ -114,7 +121,7 @@ let movies = [
     },
     {
         id: 6,
-        title: 'Clueless',
+        Title: 'Clueless',
         genre: {
             Name:'Teen',
             genreDescription: 'Movies with a rating of PG13 and above that offer insight into the young adult experience, usually featuring some kind of coming-of-age lesson.'
@@ -135,55 +142,57 @@ let movies = [
 let users = [
     {
         id: 1,
-        username: 'disneylover@gmail.com',
+        name: 'disneylover@gmail.com',
         password: 'MinneMouse123',
-        favoriteList: ''
+        favoriteList: []
     },
     {
         id: 2,
-        username: 'adventurous1@yahoo.com',
+        name: 'adventurous1@yahoo.com',
         password: '123LetsGo',
-        favoriteList: ''
+        favoriteList: ['Hook']
     },
     {
         id: 3,
-        username: 'pamiam@me.com',
+        name: 'pamiam@me.com',
         password: 'BookRLife',
-        favoriteList: ''
+        favoriteList: []
     },
     {
         id: 4,
-        username: 'toripines33@gmail.com',
+        name: 'toripines33@gmail.com',
         password: 'Climbing2023',
-        favoriteList: ''
+        favoriteList: []
     },
     {
         id: 5,
-        username: 'dancingqueen@gmail.com',
+        name: 'dancingqueen@gmail.com',
         password: 'MamaMia2011',
-        favoriteList: ''
+        favoriteList: []
     }
 ];
 
 
 //MOVIE ENDPOINTS
-//GET ALL movies
+//READ ALL movies
 app.get('/movies', (req,res) =>{
     res.status(200).json(movies);
 });
 
-//GET description of movie by title
+//READ description of movie by title
 app.get('/movies/:title', (req,res) => {
-    res.json(movies.find((movies) => {
-        return movies.title === req.params.title
-    }));
+    const {title}= req.params;
+    const movie = movies.find(movies => movies.Title === title);
+
+    if (movie) {
+        res.status(200).json(movie);
+    } else {
+        res.status(400).send('No such movie');
+    }
 });
 
-//GET movie genres
+//READ movie genres
 app.get('/movies/genre/:genreName', (req,res) => {
-    // res.json(movies.find((movies) => {
-    //     return movies.genre === req.params.Name
-    // }));
     const {genreName}= req.params;
     const genres = movies.find(movies => movies.genre.Name === genreName).genre;
 
@@ -194,46 +203,91 @@ app.get('/movies/genre/:genreName', (req,res) => {
     }
 });
 
-//GET data about a dircetor by name
+//READ data about a dircetor by name
 app.get('/movies/director/:name', (req,res) =>{
-    res.json(movies.find((movies) => {
+    res.json(movies.filter((movies) => {
         return movies.director.name === req.params.name
     }));
 });
 
 
 //USER ENDPOINTS
-//POST new user
+//CREATE new user
 app.post('/users', (req,res) => {
     let newUser = req.body;
 
-    if(!newUser.username) {
-        const message = 'Missing name is request body';
-        res.status(400).send(message);
-    } else {
+    if(newUser.name) {
         newUser.id = uuid.v4();
         users.push(newUser);
-        res.status(200).send(newUser);
+        res.status(201).send(newUser);
+    } else {
+        const message = 'Missing name in request body';
+        res.status(400).send(message);
     }
 });
 
-//PUT user info (username)
+//READ all users
+app.get('/users', (req,res) =>{
+    res.status(200).json(users);
+});
 
-//PUT movie to user favoriteList
+//UPDATE user info (username)
+app.put('/users/:id', (req,res) => {
+    const {id} = req.params;
+    let updatedUser = req.body;
+
+    let user = users.find(user => user.id == id);
+
+    if(user){
+        user.name = updatedUser.name;
+        res.status(200).json(user);
+    } else {
+        res.status(400).send('No such user');
+    }
+});
+
+//UPDATE movie to user favoriteList
+app.put('/users/:id/:movieTitle', (req,res) => {
+    const {id, movieTitle} = req.params;
+
+    let user = users.find(user => user.id == id);
+
+    if(user){
+        user.favoriteList.push(movieTitle);
+        res.status(200).send(movieTitle + ' has been added to user ' + id + '\'s Movie List!');
+    } else {
+        res.status(400).send('No such user');
+    }
+});
 
 //DELETE movie from user favoriteList
+app.delete('/users/:id/:movieTitle', (req,res) => {
+    const {id, movieTitle} = req.params;
+
+    let user = users.find(user => user.id == id);
+
+    if(user){
+        user.favoriteList = user.favoriteList.filter(title => title !== movieTitle);
+        res.status(200).send(movieTitle + ' has been removed from user ' + id + '\'s Movie List!');
+    } else {
+        res.status(400).send('No such user');
+    }
+});
 
 //DELETE user, return text that user email has been removed
+app.delete('/users/:id', (req,res) => {
+    const {id} = req.params;
 
-//Parser/Handling
-const bodyParser = require('body-parser'),
-    methodOverride = require('method-override');
+    let user = users.find(user => user.id == id);
 
-app.use(bodyParser.urlencoded({
-        extended: true
-    }));
-app.use(bodyParser.json());
-app.use(methodOverride());
+    if(user){
+        users = users.filter(user => user.id != id);
+        res.status(200).send('User ' + id + ' has been deleted!');
+    } else {
+        res.status(400).send('No such user');
+    }
+});
+
 //error handling
 app.use((err, req, res, next) => {
     console.error(err.stack);
