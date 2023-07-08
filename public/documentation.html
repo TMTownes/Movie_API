@@ -15,59 +15,70 @@
             <tr>
                 <th>Movie Request</th>
                 <th>Movie URL</th>
+                <th>HTTP Method</th>
                 <th>Movie Response</th>
             </tr>
             <tr>
-                <td>GET a list of ALL movies</td>
+                <td>Get a list of ALL movies</td>
                 <td> /movies</td>
-                <td></td>
+                <td>GET</td>
+                <td>A JSON object holding data about all movies</td>
             </tr>
             <tr>
-                <td>GET a data (description, genre, director, imageURL, featured y/n) on single movie</td>
+                <td>Get a data on single movie</td>
                 <td> /movies/:title</td>
-                <td></td>
+                <td>GET</td>
+                <td>A JSON object holding data about a movie including ID, title, description, genre, director, imageURL, featured y/n</td>
             </tr>
             <tr>
-                <td>GET description of movie by name/title (i.e "Thriller")</td>
-                <td> /movies/:title</td>
-                <td></td>
+                <td>GET description of movie genre by name (i.e "Thriller")</td>
+                <td> /movies/genre/:genre</td>
+                <td>GET</td>
+                <td>A JSON object holding data about a specific genre</td>
             </tr>
             <tr>
-                <td>GET data about director(bio, birth year, death year) by name</td>
-                <td> /movies/:dirName</td>
-                <td></td>
+                <td>GET data about director by name</td>
+                <td> /movies/director/:name</td>
+                <td>GET</td>
+                <td>A JSON object holding data about a director including bio, birth year, death year</td>
             </tr>
             <br/>
             <br/>
             <tr>
                 <th>User Request</th>
                 <th>User URL</th>
+                <th>HTTP Method</th>
                 <th>User Response</th>
             </tr>
             <tr>
-                <td>POST New User (Register)</td>
-                <td></td>
-                <td></td>
+                <td>Create New User (Register)</td>
+                <td> /users</td>
+                <td>POST</td>
+                <td>A JSON object holding data about a user that was added</td>
             </tr>
             <tr>
-                <td>PUT/Update user info (username)</td>
-                <td></td>
-                <td></td>
+                <td>Update user info by ID</td>
+                <td> /users/:id</td>
+                <td>PUT</td>
+                <td>A JSON object holding data about a user that was updated</td>
             </tr>
             <tr>
-                <td>POST/Add new Movie to Favorites List (msg when complete)</td>
-                <td></td>
-                <td></td>
+                <td>Add new Movie to Favorites List (msg when complete)</td>
+                <td> /users/:id/:movieTitle</td>
+                <td>PUT</td>
+                <td>A text message indicating the user's Favorite's List was updated</td>
             </tr>
             <tr>
                 <td>DELETE movie from Favorites List</td>
-                <td></td>
-                <td></td>
+                <td> /users/:id/:movieTitle</td>
+                <td>DELETE</td>
+                <td>A text message indicating a movie was removed from the user's Favorite's List</td>
             </tr>
             <tr>
                 <td>DELETE user profile (msg when complete)</td>
-                <td></td>
-                <td></td>
+                <td> /users/:id</td>
+                <td>DELETE</td>
+                <td>A text message indicating a user was removed</td>
             </tr>
         </table>
     </body>
