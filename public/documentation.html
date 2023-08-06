@@ -22,25 +22,25 @@
                 <td>Get a list of ALL movies</td>
                 <td> /movies</td>
                 <td>GET</td>
-                <td>A JSON object holding data about all movies</td>
+                <td>A JSON object holding Model data about all movies</td>
             </tr>
             <tr>
                 <td>Get a data on single movie</td>
-                <td> /movies/:title</td>
+                <td> /movies/:Title</td>
                 <td>GET</td>
-                <td>A JSON object holding data about a movie including ID, title, description, genre, director, imageURL, featured y/n</td>
+                <td>A JSON object holding Model data about a movie including ID, title, description, genre, director, imageURL, featured y/n</td>
             </tr>
             <tr>
                 <td>GET description of movie genre by name (i.e "Thriller")</td>
-                <td> /movies/genre/:genre</td>
+                <td> /movies/Genre/:Name</td>
                 <td>GET</td>
-                <td>A JSON object holding data about a specific genre</td>
+                <td>A JSON object holding Model data about a specific genre</td>
             </tr>
             <tr>
                 <td>GET data about director by name</td>
-                <td> /movies/director/:name</td>
+                <td> /movies/Director/:Name</td>
                 <td>GET</td>
-                <td>A JSON object holding data about a director including bio, birth year, death year</td>
+                <td>A JSON object holding Model data about a director including bio, birth year, death year</td>
             </tr>
             <br/>
             <br/>
@@ -54,35 +54,35 @@
                 <td>Create New User (Register)</td>
                 <td> /users</td>
                 <td>POST</td>
-                <td>A JSON object holding data about a user that was added</td>
+                <td>A JSON object holding Model data about a user that was added</td>
             </tr>
             <tr>
-                <td>Update user info by ID</td>
-                <td> /users/:id</td>
+                <td>Update user info by Username</td>
+                <td> /users/:Username</td>
                 <td>PUT</td>
-                <td>A JSON object holding data about a user that was updated</td>
+                <td>A JSON object holding Model data about a user that was updated</td>
             </tr>
             <tr>
-                <td>Update Director Bio for Multiple Movies</td>
-                <td> /movies/director/:bio</td>
+                <td>Update Director Info for Multiple Movies</td>
+                <td> /movies/director/:Name</td>
                 <td>PUT</td>
                 <td>A JSON object holding data about a director that was updated</td>
             </tr>
             <tr>
-                <td>Add new Movie to Favorites List (msg when complete)</td>
-                <td> /users/:id/:movieTitle</td>
+                <td>Add new Movie to FavoriteMovies List (msg when complete)</td>
+                <td> /users/Username/movies/:MovieID</td>
                 <td>PUT</td>
                 <td>A text message indicating the user's Favorite's List was updated</td>
             </tr>
             <tr>
-                <td>DELETE movie from Favorites List</td>
-                <td> /users/:id/:movieTitle</td>
+                <td>DELETE movie from FavoriteMovies List</td>
+                <td> /users/Username/movies/:MovieID</td>
                 <td>DELETE</td>
                 <td>A text message indicating a movie was removed from the user's Favorite's List</td>
             </tr>
             <tr>
                 <td>DELETE user profile (msg when complete)</td>
-                <td> /users/:id</td>
+                <td> /users/:Username</td>
                 <td>DELETE</td>
                 <td>A text message indicating a user was removed</td>
             </tr>
