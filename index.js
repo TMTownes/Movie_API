@@ -223,7 +223,7 @@ app.get('/genres', async (req,res) => {
 
 //GET movies by genre
 app.get('/movies/Genre/:Name', async (req, res) => {
-    await Movies.find({Genre: req.params.Name})
+    await Movies.find({"Genre.Name": req.params.Name})
         .then((movieGenres) => {
             res.json(movieGenres);
         })
@@ -234,10 +234,15 @@ app.get('/movies/Genre/:Name', async (req, res) => {
 });
 
 //READ data about a dircetor by name
-app.get('/movies/director/:name', (req,res) =>{
-    res.json(movies.filter((movies) => {
-        return movies.director.name === req.params.name
-    }));
+app.get('/movies/director/:Name', async (req, res) => {
+    await Movies.findOne({"Director.Name": req.params.Name})
+        .then((director) => {
+            res.json(director);
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).send('Error: ' + err);
+        })
 });
 
 
@@ -327,6 +332,31 @@ app.put('/users/:Username', async (req, res) => {
     });
 });
 
+//Update director info
+/* Expect JSON
+{
+    Name: String, (required)
+    Bio: String (required) 
+} */
+// app.post('/movies/Director/:Name', async (req, res) => {
+//     await Movies.findOneAndUpdate({"Director.Name": req.params.Name}, {
+//         $set: {
+//             Name: req.body.Name,
+//             Bio: req.body.Bio,
+//             Birth: req.body.Birth,
+//             Death: req.body.Death
+//         }
+//     },
+//     {new: true})
+//         .then((updatedDirector) => {
+//             res.json(updatedDirector);
+//         })
+//         .catch((err) => {
+//             console.error(err);
+//             res.status(500).send('Error: ' + err);
+//         });
+// });
+
 
 //UPDATE movie to user's favoriteMovies. Consider using "$addToSet" instead of "$push"
 app.post('/users/:Username/movies/:MovieID', async (req, res) => {
@@ -344,17 +374,18 @@ app.post('/users/:Username/movies/:MovieID', async (req, res) => {
 });
 
 //DELETE movie from user favoriteList. Same as add, but use $pull
-app.delete('/users/:id/:movieTitle', (req,res) => {
-    const {id, movieTitle} = req.params;
-
-    let user = users.find(user => user.id == id);
-
-    if(user){
-        user.favoriteList = user.favoriteList.filter(title => title !== movieTitle);
-        res.status(200).send(movieTitle + ' has been removed from user ' + id + '\'s Movie List!');
-    } else {
-        res.status(400).send('No such user');
-    }
+app.delete('/users/:Username/movies/:MovieID', async (req,res) => {
+    await Users.findOneAndUpdate({Username: req.params.Username}, {
+        $pull: {FavoriteMovies: req.params.MovieID}
+    },
+    {new: true})
+        .then((removeMovie) => {
+            res.json(removeMovie);
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).send('Error: ' + err);
+        });
 });
 
 //DELETE user, return text that user email has been removed
