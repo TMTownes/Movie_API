@@ -278,3 +278,5 @@
 ::1 - - [06/Aug/2023:00:16:49 +0000] "DELETE /users/Derek HTTP/1.1" 400 19 "-" "PostmanRuntime/7.32.3"
 ::1 - - [06/Aug/2023:00:17:00 +0000] "DELETE /users/Pam HTTP/1.1" 200 16 "-" "PostmanRuntime/7.32.3"
 ::1 - - [06/Aug/2023:00:17:21 +0000] "GET /movies/Genre/Adventure HTTP/1.1" 200 2513 "-" "PostmanRuntime/7.32.3"
+::1 - - [06/Aug/2023:00:24:02 +0000] "GET /documentation.html HTTP/1.1" 200 3551 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36"
+::1 - - [06/Aug/2023:00:24:02 +0000] "GET /documentation.css HTTP/1.1" 304 - "http://localhost:8080/documentation.html" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36"
