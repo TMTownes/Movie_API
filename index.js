@@ -28,6 +28,21 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 app.use(methodOverride());
 
+const cors = require('cors');
+let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
+
+app.use(cors({
+    origin: (origin, callback) => {
+        if (!origin) return callback(null, true);
+        if(allowedOrigins.indexOf(origin) === -1){
+            //if specific origin not found on allowed list
+            let message = 'The CORS policy for this application does not allow access from origin' + origin;
+            return callback(new Error(message), false);
+        }
+        return callback(null, true);
+    }
+}));
+
 //Authentication import
 let auth = require('./auth.js')(app);
 const passport = require('passport');
