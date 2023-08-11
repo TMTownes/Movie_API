@@ -307,3 +307,7 @@
 ::1 - - [09/Aug/2023:02:57:38 +0000] "GET /users/Damon HTTP/1.1" 200 167 "-" "PostmanRuntime/7.32.3"
 ::1 - - [09/Aug/2023:02:57:50 +0000] "GET /movies/Genre/Adventure HTTP/1.1" 401 - "-" "PostmanRuntime/7.32.3"
 ::1 - - [09/Aug/2023:02:58:03 +0000] "GET /movies/Genre/Adventure HTTP/1.1" 200 2513 "-" "PostmanRuntime/7.32.3"
+::1 - - [10/Aug/2023:02:34:16 +0000] "POST /users HTTP/1.1" 400 20 "-" "PostmanRuntime/7.32.3"
+::1 - - [10/Aug/2023:02:34:35 +0000] "DELETE /users/Damon HTTP/1.1" 401 - "-" "PostmanRuntime/7.32.3"
+::1 - - [10/Aug/2023:02:34:44 +0000] "DELETE /users/Damon HTTP/1.1" 200 18 "-" "PostmanRuntime/7.32.3"
+::1 - - [10/Aug/2023:02:34:57 +0000] "POST /users HTTP/1.1" 201 219 "-" "PostmanRuntime/7.32.3"
