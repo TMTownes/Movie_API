@@ -4,7 +4,8 @@ const express = require ('express'),
     path = require('path'),
     uuid = require('uuid'),
     mongoose = require('mongoose'),
-    Models = require('./models.js');
+    Models = require('./models.js'),
+    {check, validationResult} = require('express-validator');
 
 mongoose.connect('mongodb://localhost:27017/cfDB', {
     useNewUrlParser: true, useUnifiedTopology: true});
@@ -277,7 +278,19 @@ app.get('/movies/director/:Name', passport.authenticate('jwt', {session: false})
     Email: String,
     Birthday: Date
 } */
-app.post('/users', async (req, res) =>{
+app.post('/users', [
+    check('Username', 'Username is required').isLength({min: 5}),
+    check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
+    check('Password', 'Password is required').not().isEmpty(),
+    check('Email', 'Email does not appear to be valid').isEmail()
+], async (req, res) =>{
+    //check validation object
+    let errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+        return res.status(422).json({errors: errors.array()});
+    }
+
     let hashedPassword = Users.hashPassword(req.body.Password);
     await Users.findOne({Username: req.body.Username})
     .then((user) => {
@@ -345,12 +358,22 @@ app.get('/users/:Username', passport.authenticate('jwt', {session: false}), asyn
     Email: String, (required)
     Birthday: Date
 } */
-app.put('/users/:Username', passport.authenticate('jwt', {session: false}), async (req, res) => {
-    //Condition Check
+app.put('/users/:Username', passport.authenticate('jwt', {session: false}), [
+    check('Username', 'Username is required').isLength({min: 5}),
+    check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
+], async (req, res) => {
+    //Conditions Check
     if (req.user.Username != req.params.Username) {
         return res.status(400).send('Permission denied');
     }
-    //End Condition
+
+    let errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+        return res.status(422).json({errors: errors.array()});
+    }
+
+    //End Conditions
     await Users.findOneAndUpdate({Username: req.params.Username}, {$set: 
     {
         Username: req.body.Username,
@@ -396,11 +419,24 @@ app.put('/users/:Username', passport.authenticate('jwt', {session: false}), asyn
 
 
 //UPDATE movie to user's favoriteMovies. Consider using "$addToSet" instead of "$push"
-app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt', {session: false}), async (req, res) => {
+app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt', {session: false}), [
+    check('Username', 'Username is required').isLength({min: 5}),
+    check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
+    check('Username', 'Username is required').not().isEmpty()
+],
+
+async (req, res) => {
     //Condition Check
     if (req.user.Username != req.params.Username) {
         return res.status(400).send('Permission denied');
     }
+
+    let errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+        return res.status(422).json({errors: errors.array()});
+    }
+
     //End Condition
     await Users.findOneAndUpdate({Username: req.params.Username}, {
         $push: {FavoriteMovies: req.params.MovieID}
@@ -462,16 +498,11 @@ app.use((err, req, res, next) => {
     res.status(500).send('Something broke!');
 });
 
-app.listen(8080, () => {
-    console.log('Your app is listening on port 8080.');
+// app.listen(8080, () => {
+//     console.log('Your app is listening on port 8080.');
+// });
+
+const port = process.env.PORT || 8080;
+app.listen(port, '0.0.0.0', () => {
+    console.log('Listening on Port ' + port);
 });
-
-// const http = require('http');
-
-
-// http.createServer((request, response) => {
-//   response.writeHead(200, {'Content-Type': 'text/plain'});
-//   response.end('Welcome to my book club!\n');
-// }).listen(8080);
-
-// console.log('My first Node test server is running on Port 8080.');
