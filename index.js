@@ -7,8 +7,13 @@ const express = require ('express'),
     Models = require('./models.js'),
     {check, validationResult} = require('express-validator');
 
-mongoose.connect('mongodb://localhost:27017/cfDB', {
+//Local Database
+// mongoose.connect('mongodb://localhost:27017/cfDB', {
+//     useNewUrlParser: true, useUnifiedTopology: true});
+
+mongoose.connect(process.env.CONNECTION_URI, {
     useNewUrlParser: true, useUnifiedTopology: true});
+
 const app = express(); 
 
 //'log.txt' file created in root
@@ -506,3 +511,4 @@ const port = process.env.PORT || 8080;
 app.listen(port, '0.0.0.0', () => {
     console.log('Listening on Port ' + port);
 });
+
