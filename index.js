@@ -11,11 +11,10 @@ const express = require ('express'),
 // mongoose.connect('mongodb://localhost:27017/cfDB', {
 //     useNewUrlParser: true, useUnifiedTopology: true});
 
-mongoose.connect('process.env.CONNECTION_URI', {
-    useNewUrlParser: true, useUnifiedTopology: true});
 
+
+mongoose.connect(process.env.CONNECTION_URI, {useNewUrlParser: true, useUnifiedTopology: true});
 const app = express(); 
-
 //'log.txt' file created in root
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {flags: 'a'});
 //Parser/Handling
