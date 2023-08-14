@@ -5,26 +5,27 @@ const express = require ('express'),
     uuid = require('uuid'),
     mongoose = require('mongoose'),
     Models = require('./models.js'),
-    {check, validationResult} = require('express-validator');
+    {check, validationResult} = require('express-validator'),
+    dotenv = require('dotenv').config();
 
-//Local Database
+
+const Movies = Models.Movie;
+const Users = Models.User;
+const Genres = Models.Genres;
+
+    //Local Database
 // mongoose.connect('mongodb://localhost:27017/cfDB', {
 //     useNewUrlParser: true, useUnifiedTopology: true});
 
+mongoose.connect(process.env.MONGO_URI, {useNewUrlParser: true, useUnifiedTopology: true});
 
 const app = express(); 
-mongoose.connect(process.env.MONGO_URI, {useNewUrlParser: true, useUnifiedTopology: true});
 
 //'log.txt' file created in root
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {flags: 'a'});
 //Parser/Handling
 const bodyParser = require('body-parser'),
     methodOverride = require('method-override');
-
-const Movies = Models.Movie;
-const Users = Models.User;
-const Genres = Models.Genres;
-
 
 app.use(bodyParser.urlencoded({
         extended: true
