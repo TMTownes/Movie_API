@@ -13,7 +13,7 @@ const Movies = Models.Movie;
 const Users = Models.User;
 const Genres = Models.Genres;
 
-    //Local Database
+//Local Database
 // mongoose.connect('mongodb://localhost:27017/cfDB', {
 //     useNewUrlParser: true, useUnifiedTopology: true});
 
@@ -35,7 +35,7 @@ app.use(bodyParser.json());
 app.use(methodOverride());
 
 const cors = require('cors');
-let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
+let allowedOrigins = ['http://localhost:8080', 'http://testsite.com', 'https://myflix-retro-af49f4e11172.herokuapp.com'];
 
 app.use(cors({
     origin: (origin, callback) => {
