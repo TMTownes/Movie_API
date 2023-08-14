@@ -59,7 +59,7 @@ app.use(morgan('combined', {stream: accessLogStream}));
 app.use(express.static('public')); //routes all requests for static files to their reapective files on the server
 
 //Home Page
-app.get('/', (req,res) => {
+app.get('/home', (req,res) => {
     let responseText = 'Welcome to myFlix! Millennial Movies ';
     // responseText += '<small>Requested at: ' + req.requestTime + '</small>';
     res.send(responseText);
