@@ -1,5 +1,5 @@
 const mongoose = require('mongoose'),
-    bcrypt = require('bcrypt');
+    bcrypt = require('bcryptjs');
 const { use } = require('passport');
 
 let movieSchema = mongoose.Schema({
