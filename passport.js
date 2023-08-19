@@ -3,6 +3,8 @@ LocalStrategy = require('passport-local').Strategy,
 Models = require('./models.js'),
 passportJWT = require('passport-jwt');
 
+
+
 let Users = Models.User,
 JwtStrategy = passportJWT.Strategy,
 ExtractJWT = passportJWT.ExtractJwt;

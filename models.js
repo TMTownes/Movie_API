@@ -7,7 +7,7 @@ let movieSchema = mongoose.Schema({
     Description: {type: String, required: true},
     Genre: {
         Name: String,
-        Description: String,
+        Description: String
     },
     Director: {
         Name: String,
@@ -32,6 +32,7 @@ userSchema.statics.hashPassword = (password) => {
 
 userSchema.methods.validatePassword = function(password) {
     return bcryptjs.compareSync(password, this.password);
+    // return true;
 };
 
 let genreSchema = mongoose.Schema({
