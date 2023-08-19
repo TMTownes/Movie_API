@@ -13,8 +13,8 @@ ExtractJWT = passportJWT.ExtractJwt;
 //Take username/passpord from request body and use Mongoose to check database
 passport.use(
     new LocalStrategy(
-        {usernameField: 'Username',
-        passwordField: 'Password',
+        { usernameField: 'Username',
+        passwordField: 'Password'
     },
     async (username, password, callback) => {
         console.log(`${username} ${password}`);
@@ -40,7 +40,7 @@ passport.use(
             }
         })
     }
-    )
+  )
 );
 
 //Authenticate users based on JWT submitted with requests
