@@ -31,6 +31,11 @@ app.use(bodyParser.urlencoded({
         extended: true
     }));
 
+//Authentication import
+let auth = require('./auth')(app);
+const passport = require('passport');
+require('./passport');
+
 app.use(bodyParser.json());
 app.use(methodOverride());
 
@@ -49,10 +54,7 @@ app.use(cors({
     }
 }));
 
-//Authentication import
-let auth = require('./auth.js')(app);
-const passport = require('passport');
-require('./passport.js');
+
 
 //setup Logger
 app.use(morgan('combined', {stream: accessLogStream}));
@@ -295,8 +297,8 @@ app.post('/users', [
     if (!errors.isEmpty()) {
         return res.status(422).json({errors: errors.array()});
     }
-
-    let hashedPassword = Users.hashPassword(req.body.Password);
+        console.log('User created');
+    // let hashedPassword = Users.hashPassword(req.body.Password);
     await Users.findOne({Username: req.body.Username})
     .then((user) => {
         if (user) {
@@ -305,6 +307,7 @@ app.post('/users', [
             Users.create({
                 Username: req.body.Username,
                 Password: hashedPassword,
+                // Password: req.body.Password,
                 Email: req.body.Email,
                 Birthday: req.body.Birthday
             })
@@ -363,10 +366,12 @@ app.get('/users/:Username', passport.authenticate('jwt', {session: false}), asyn
     Email: String, (required)
     Birthday: Date
 } */
-app.put('/users/:Username', passport.authenticate('jwt', {session: false}), [
+app.put('/users/:Username', passport.authenticate('jwt', {session: false}), 
+[
     check('Username', 'Username is required').isLength({min: 5}),
     check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
-], async (req, res) => {
+],
+ async (req, res) => {
     //Conditions Check
     if (req.user.Username !== req.params.Username) {
         return res.status(400).send('Permission denied');
@@ -448,6 +453,7 @@ async (req, res) => {
     },
     {new: true}) //Makes sure updated document is returned
     .then ((updatedUser) => {
+        console.log(req.params.MovieID);
         res.json(updatedUser);
     })
     .catch((err) => {

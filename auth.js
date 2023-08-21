@@ -7,9 +7,9 @@ require('./passport');
 
 let generateJWTToken = (user) => {
     return jwt.sign(user, jwtSecret, {
-        subject:user.Username,
+        subject: user.Username,
         expiresIn: '7d',
-        algorithm: 'HS256'
+        algorithm: 'HS256',
         //algorithm used to "sign" or encode the values for the JWT
     });
 }
@@ -17,8 +17,9 @@ let generateJWTToken = (user) => {
 /* POST login */
 module.exports = (router) => {
     router.post('/login', (req, res) => {
+        console.log("Login Function", req.user);
         passport.authenticate('local', {session: false}, 
-        (error, user) => {
+        (error, user, info) => {
             console.log(user);
             if (error || !user) {
                 return res.status(400).json({
@@ -36,4 +37,4 @@ module.exports = (router) => {
             });
         })(req, res);
     });
-}
+};
