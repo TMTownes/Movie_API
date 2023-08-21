@@ -10,13 +10,15 @@ JwtStrategy = passportJWT.Strategy,
 ExtractJWT = passportJWT.ExtractJwt;
 
 
-//Take username/passpord from request body and use Mongoose to check database
+//Take username/password from request body and use Mongoose to check database
+//Request is made from URL endpoint (params NOT body)
 passport.use(
     new LocalStrategy(
         { usernameField: 'Username',
         passwordField: 'Password'
     },
     async (username, password, callback) => {
+        console.log('HERE');
         console.log(`${username} ${password}`);
         await Users.findOne({Username: username})
         .then((user) => {
@@ -26,7 +28,7 @@ passport.use(
                     message: 'Incorrect username or password.',
                 });
             }
-            if (!user.validatePassword(password)){
+            if (!!user.validatePassword(password)){
                 console.log('incorrect password');
                 return callback(null, false, {message: 'Incorrect password.'});
             }
