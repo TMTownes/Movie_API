@@ -40,18 +40,18 @@ app.use(bodyParser.json());
 app.use(methodOverride());
 
 const cors = require('cors');
-// let allowedOrigins = ['http://localhost:8080', 'http://testsite.com', 'https://myflix-retro-af49f4e11172.herokuapp.com'];
+let allowedOrigins = ['http://localhost:8080', 'http://testsite.com', 'https://myflix-retro-af49f4e11172.herokuapp.com'];
 
 app.use(cors({
-    // origin: (origin, callback) => {
-    //     if (!origin) return callback(null, true);
-    //     if(allowedOrigins.indexOf(origin) === -1){
-    //         //if specific origin not found on allowed list
-    //         let message = 'The CORS policy for this application does not allow access from origin' + origin;
-    //         return callback(new Error(message), false);
-    //     }
-    //     return callback(null, true);
-    // }
+    origin: (origin, callback) => {
+        if (!origin) return callback(null, true);
+        if(allowedOrigins.indexOf(origin) === -1){
+            //if specific origin not found on allowed list
+            let message = 'The CORS policy for this application does not allow access from origin' + origin;
+            return callback(new Error(message), false);
+        }
+        return callback(null, true);
+    }
 }));
 
 
@@ -285,12 +285,17 @@ app.get('/movies/director/:Name', passport.authenticate('jwt', {session: false})
     Email: String,
     Birthday: Date
 } */
+const allowedDomains = "*";
 app.post('/users', [
     check('Username', 'Username is required').isLength({min: 4}),
     check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
     check('Password', 'Password is required').not().isEmpty(),
     check('Email', 'Email does not appear to be valid').isEmail()
-], async (req, res) =>{
+], cors({
+    origin: allowedDomains,
+    credentials: true
+}),
+async (req, res) =>{
     //check validation object
     let errors = validationResult(req);
 
