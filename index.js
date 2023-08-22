@@ -40,7 +40,7 @@ app.use(bodyParser.json());
 app.use(methodOverride());
 
 const cors = require('cors');
-let allowedOrigins = ['http://localhost:8080', 'http://testsite.com', 'https://myflix-retro-af49f4e11172.herokuapp.com'];
+// let allowedOrigins = ['http://localhost:8080', 'http://testsite.com', 'https://myflix-retro-af49f4e11172.herokuapp.com'];
 
 app.use(cors({
     // origin: (origin, callback) => {
