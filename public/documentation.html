@@ -12,49 +12,31 @@
     <body>
         <h1>The myFlix Documentation</h1>
         <table>
+        <br/>
             <tr>
-                <th>Movie Request</th>
-                <th>Movie URL</th>
+                <th>Sign Up</th>
+                <th>Login URL</th>
                 <th>HTTP Method</th>
-                <th>Movie Response</th>
-            </tr>
-            <tr>
-                <td>Get a list of ALL movies</td>
-                <td> /movies</td>
-                <td>GET</td>
-                <td>A JSON object holding Model data about all movies</td>
-            </tr>
-            <tr>
-                <td>Get a data on single movie</td>
-                <td> /movies/:Title</td>
-                <td>GET</td>
-                <td>A JSON object holding Model data about a movie including ID, title, description, genre, director, imageURL, featured y/n</td>
-            </tr>
-            <tr>
-                <td>GET description of movie genre by name (i.e "Thriller")</td>
-                <td> /movies/Genre/:Name</td>
-                <td>GET</td>
-                <td>A JSON object holding Model data about a specific genre</td>
-            </tr>
-            <tr>
-                <td>GET data about director by name</td>
-                <td> /movies/Director/:Name</td>
-                <td>GET</td>
-                <td>A JSON object holding Model data about a director including bio, birth year, death year</td>
-            </tr>
-            <br/>
-            <br/>
-            <tr>
-                <th>User Request</th>
-                <th>User URL</th>
-                <th>HTTP Method</th>
-                <th>User Response</th>
+                <th>Login Response</th>
             </tr>
             <tr>
                 <td>Create New User (Register)</td>
                 <td> /users</td>
                 <td>POST</td>
                 <td>A JSON object holding Model data about a user that was added</td>
+            </tr>
+            <tr>
+                <td>Login User</td>
+                <td> /login</td>
+                <td>POST</td>
+                <td>A JSON object holding Model data about a user with hashed password authentication and bearer token for page authorization throughout the site</td>
+            </tr>
+            <br/>
+            <tr>
+                <th>User Request</th>
+                <th>User URL</th>
+                <th>HTTP Method</th>
+                <th>User Response</th>
             </tr>
             <tr>
                 <td>Update user info by Username</td>
@@ -85,6 +67,37 @@
                 <td> /users/:Username</td>
                 <td>DELETE</td>
                 <td>A text message indicating a user was removed</td>
+            </tr>
+            <br/>
+            <tr>
+                <th>Movie Request</th>
+                <th>Movie URL</th>
+                <th>HTTP Method</th>
+                <th>Movie Response</th>
+            </tr>
+            <tr>
+                <td>Get a list of ALL movies</td>
+                <td> /movies</td>
+                <td>GET</td>
+                <td>A JSON object holding Model data about all movies</td>
+            </tr>
+            <tr>
+                <td>Get a data on single movie</td>
+                <td> /movies/:Title</td>
+                <td>GET</td>
+                <td>A JSON object holding Model data about a movie including ID, title, description, genre, director, imageURL, featured y/n</td>
+            </tr>
+            <tr>
+                <td>GET description of movie genre by name (i.e "Thriller")</td>
+                <td> /movies/Genre/:Name</td>
+                <td>GET</td>
+                <td>A JSON object holding Model data about a specific genre</td>
+            </tr>
+            <tr>
+                <td>GET data about director by name</td>
+                <td> /movies/Director/:Name</td>
+                <td>GET</td>
+                <td>A JSON object holding Model data about a director including bio, birth year, death year</td>
             </tr>
         </table>
     </body>
