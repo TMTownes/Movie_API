@@ -340,8 +340,8 @@ app.get('/users', passport.authenticate('jwt', {session: false}), async (req, re
     .then((users) => {
         res.status(201).json(users);
     })
-    .catch((err) => {
-        console.error(err);
+    .catch((error) => {
+        console.error(error);
         res.status(500).send('Error: ' + err);
     });
 });
