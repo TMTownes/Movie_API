@@ -262,6 +262,7 @@ app.get('/movies/Genre/:Name', passport.authenticate('jwt', {session: false}), a
         });
 });
 
+
 //READ data about a dircetor by name
 app.get('/movies/director/:Name', passport.authenticate('jwt', {session: false}), async (req, res) => {
     await Movies.findOne({"Director.Name": req.params.Name})
@@ -413,24 +414,34 @@ app.put('/users/:Username', passport.authenticate('jwt', {session: false}),
     Name: String, (required)
     Bio: String (required) 
 } */
-// app.post('/movies/Director/:Name', async (req, res) => {
-//     await Movies.findOneAndUpdate({"Director.Name": req.params.Name}, {
-//         $set: {
-//             Name: req.body.Name,
-//             Bio: req.body.Bio,
-//             Birth: req.body.Birth,
-//             Death: req.body.Death
-//         }
-//     },
-//     {new: true})
-//         .then((updatedDirector) => {
-//             res.json(updatedDirector);
-//         })
-//         .catch((err) => {
-//             console.error(err);
-//             res.status(500).send('Error: ' + err);
-//         });
-// });
+app.post('/movies/Director/:Name', passport.authenticate('jwt', {session: false}), async (req, res) => {
+    //Condition Check
+    if (req.user.Username != req.params.Username) {
+        return res.status(400).send('Permission denied');
+    }
+
+    let errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+        return res.status(422).json({errors: errors.array()});
+    }
+    await Movies.findOneAndUpdate({"Director.Name": req.params.Name}, {
+        $set: {
+            Name: req.body.Name,
+            Bio: req.body.Bio,
+            Birth: req.body.Birth,
+            Death: req.body.Death
+        }
+    },
+    {new: true})
+        .then((updatedDirector) => {
+            res.json(updatedDirector);
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).send('Error: ' + err);
+        });
+});
 
 
 //UPDATE movie to user's favoriteMovies. Consider using "$addToSet" instead of "$push"
