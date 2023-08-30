@@ -265,9 +265,15 @@ app.get('/movies/Genre/:Name', passport.authenticate('jwt', {session: false}), a
 
 //READ data about a dircetor by name
 app.get('/movies/director/:Name', passport.authenticate('jwt', {session: false}), async (req, res) => {
-    await Movies.findOne({"Director.Name": req.params.Name})
-        .then((director) => {
-            res.json(director);
+    await Movies.findOne({'Director.Name': req.params.Name})
+        .then((movie) => {
+            if(!movie) {
+                return res.status(404).send('Error: ' + req.params.Name + ' was not found.');
+            } else {
+                res.status(200).json(movie.Director);
+            }
+            
+
         })
         .catch((err) => {
             console.error(err);
