@@ -252,9 +252,14 @@ app.get('/genres', passport.authenticate('jwt', {session: false}), async (req,re
 
 //GET movies by genre
 app.get('/movies/Genre/:Name', passport.authenticate('jwt', {session: false}), async (req, res) => {
-    await Movies.find({"Genre.Name": req.params.Name})
+    await Movies.find({'Genre.Name': req.params.Name})
         .then((movieGenres) => {
-            res.json(movieGenres);
+            if(!movieGenres) {
+                return res.status(404).send('Error: ' + req.params.Name + ' was not found.');
+            } else {
+                res.status(200).json(movieGenres); 
+            }
+            
         })
         .catch((err) => {
             console.error(err);
@@ -431,7 +436,7 @@ app.post('/movies/Director/:Name', passport.authenticate('jwt', {session: false}
     if (!errors.isEmpty()) {
         return res.status(422).json({errors: errors.array()});
     }
-    await Movies.findOneAndUpdate({"Director.Name": req.params.Name}, {
+    await Movies.findOneAndUpdate({'Director.Name': req.params.Name}, {
         $set: {
             Name: req.body.Name,
             Bio: req.body.Bio,
