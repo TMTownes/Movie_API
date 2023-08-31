@@ -418,3 +418,5 @@
 127.0.0.1 - - [30/Aug/2023:05:17:16 +0000] "POST /movies/Director/Chris%20Columbus HTTP/1.1" 401 - "-" "PostmanRuntime/7.32.3"
 127.0.0.1 - - [30/Aug/2023:05:17:47 +0000] "POST /movies/Director/Chris%20Columbus HTTP/1.1" 400 17 "-" "PostmanRuntime/7.32.3"
 127.0.0.1 - - [30/Aug/2023:05:19:32 +0000] "POST /movies/Director/Chris%20Columbus HTTP/1.1" 400 17 "-" "PostmanRuntime/7.32.3"
+127.0.0.1 - - [31/Aug/2023:04:27:27 +0000] "POST /movies/Director/Chris%20Columbus HTTP/1.1" 200 1153 "-" "PostmanRuntime/7.32.3"
+127.0.0.1 - - [31/Aug/2023:04:29:50 +0000] "POST /movies/Director/Chris%20Columbus HTTP/1.1" 200 1153 "-" "PostmanRuntime/7.32.3"
