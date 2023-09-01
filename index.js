@@ -421,11 +421,12 @@ app.put('/users/:Username', passport.authenticate('jwt', {session: false}),
 
 
 //UPDATE movie to user's favoriteMovies. Consider using "$addToSet" instead of "$push"
-app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt', {session: false}), [
-    check('Username', 'Username is required').isLength({min: 5}),
-    check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
-    check('Username', 'Username is required').not().isEmpty()
-],
+app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt', {session: false}), 
+// [
+//     check('Username', 'Username is required').isLength({min: 5}),
+//     check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
+//     check('Username', 'Username is required').not().isEmpty()
+// ],
 
 async (req, res) => {
     //Condition Check
@@ -438,19 +439,22 @@ async (req, res) => {
     if (!errors.isEmpty()) {
         return res.status(422).json({errors: errors.array()});
     }
-
     //End Condition
     await Users.findOneAndUpdate({Username: req.params.Username}, {
         $push: {FavoriteMovies: req.params.MovieID}
     },
     {new: true}) //Makes sure updated document is returned
     .then ((updatedUser) => {
-        console.log(req.params.MovieID);
-        res.json(updatedUser);
+        if (!updatedUser){
+            return res.status(404).send("Unable to update.");
+        } else {
+            res.json(updatedUser);
+        }
+        
     })
-    .catch((err) => {
-        console.error(err);
-        res.status(500).send('Error: ' + err);
+    .catch((error) => {
+        console.error(error);
+        res.status(500).send('Error: ' + error);
     });
 });
 
