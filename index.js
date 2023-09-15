@@ -48,6 +48,7 @@ app.use(methodOverride());
 const cors = require('cors');
 let allowedOrigins = [
 	'http://localhost:8080',
+	'http://localhost:1234',
 	'http://testsite.com',
 	'https://myflix-retro-af49f4e11172.herokuapp.com',
 ];
