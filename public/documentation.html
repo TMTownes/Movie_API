@@ -14,8 +14,8 @@
         <table>
         <br/>
             <tr>
-                <th>Sign Up</th>
-                <th>Login URL</th>
+                <th>Login Requests</th>
+                <th>URL Endpoint</th>
                 <th>HTTP Method</th>
                 <th>Login Response</th>
             </tr>
@@ -23,7 +23,7 @@
                 <td>Create New User (Register)</td>
                 <td> /users</td>
                 <td>POST</td>
-                <td>A JSON object holding Model data about a user that was added</td>
+                <td>A JSON object holding Model data about a user that was added. Profiles should contain: Username, Password, Email, Birthday, and an array for the FavoriteMovies list.</td>
             </tr>
             <tr>
                 <td>Login User</td>
@@ -33,7 +33,7 @@
             </tr>
             <br/>
             <tr>
-                <th>User Request</th>
+                <th>User Profile Requests</th>
                 <th>User URL</th>
                 <th>HTTP Method</th>
                 <th>User Response</th>
@@ -42,7 +42,7 @@
                 <td>Update user info by Username</td>
                 <td> /users/:Username</td>
                 <td>PUT</td>
-                <td>A JSON object holding Model data about a user that was updated</td>
+                <td>A JSON object holding Model data about a user that was updated.</td>
             </tr>
             <!-- <tr>
                 <td>Update Director Info for Multiple Movies</td>
@@ -53,14 +53,14 @@
             <tr>
                 <td>Add new Movie to FavoriteMovies List by MovieID (msg when complete)</td>
                 <td> /users/Username/movies/:MovieID</td>
-                <td>PUT</td>
+                <td>POST</td>
                 <td>A text message indicating the user's Favorite's List was updated.</td>
             </tr>
             <tr>
                 <td>DELETE movie from FavoriteMovies List</td>
                 <td> /users/Username/movies/:MovieID</td>
                 <td>DELETE</td>
-                <td>A text message indicating a movie was removed from the user's Favorite's List</td>
+                <td>A text message indicating a movie was removed from the user's Favorite's List.</td>
             </tr>
             <tr>
                 <td>DELETE user profile (msg when complete)</td>
@@ -70,7 +70,7 @@
             </tr>
             <br/>
             <tr>
-                <th>Movie Request</th>
+                <th>Movie Requests (Only accessed with registered profiles)</th>
                 <th>Movie URL</th>
                 <th>HTTP Method</th>
                 <th>Movie Response</th>
@@ -79,7 +79,7 @@
                 <td>Get a list of ALL movies</td>
                 <td> /movies</td>
                 <td>GET</td>
-                <td>A JSON object holding Model data about all movies</td>
+                <td>A JSON object holding Model data about all movies. Movie Profiles include: Title, Description, Genre: Name, description, Director:</td>
             </tr>
             <tr>
                 <td>Get a data on single movie</td>
@@ -100,5 +100,9 @@
                 <td>A JSON object holding Model data about a director including bio, birth year, death year</td>
             </tr>
         </table>
+        <!-- <br/>
+        <table>
+
+        </table> -->
     </body>
 </html>
