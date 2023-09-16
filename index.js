@@ -40,10 +40,10 @@ app.use(
 const cors = require('cors');
 app.use(cors());
 
-app.use((req, res, next) => {
-	res.header({ 'Access-Control-Allow-Origins': '*' });
-	next();
-});
+// app.use((req, res, next) => {
+// 	res.header({ 'Access-Control-Allow-Origins': '*' });
+// 	next();
+// });
 
 //Authentication import
 let auth = require('./auth')(app);
