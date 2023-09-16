@@ -37,6 +37,9 @@ app.use(
 	})
 );
 
+const cors = require('cors');
+app.use(cors());
+
 //Authentication import
 let auth = require('./auth')(app);
 const passport = require('passport');
@@ -44,8 +47,6 @@ require('./passport');
 
 app.use(bodyParser.json());
 app.use(methodOverride());
-
-app.use(cors());
 
 //setup Logger
 app.use(morgan('combined', { stream: accessLogStream }));
