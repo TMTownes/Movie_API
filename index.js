@@ -429,9 +429,11 @@ app.put(
 		}
 
 		//End Conditions
+		let hashedPassword = Users.hashPassword(req.body.Password);
 		await Users.findOneAndUpdate(
 			{ Username: req.params.Username },
 			{
+		
 				$set: {
 					Username: req.body.Username,
 					Password: req.body.Password,
