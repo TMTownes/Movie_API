@@ -91,7 +91,7 @@ app.get(
 	'/movies/:Title',
 	passport.authenticate('jwt', { session: false }),
 	async (req, res) => {
-		await Movies.findOne({ Title: req.params.Title})
+		await Movies.findOne({ Title: req.params.Title })
 			.then((movie) => {
 				res.json(movie);
 			})
@@ -346,6 +346,7 @@ app.post(
 			{ Username: req.params.Username },
 			{
 				$push: { FavoriteMovies: req.params.MovieID },
+				//help
 			},
 			{ new: true }
 		) //Makes sure updated document is returned
