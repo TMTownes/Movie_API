@@ -319,14 +319,12 @@ app.put(
 		}
 
 		//End Conditions
-		let hashedPassword = Users.hashPassword(req.body.Password);
 		await Users.findOneAndUpdate(
 			{ Username: req.params.Username },
 			{
-		
 				$set: {
 					Username: req.body.Username,
-					Password: hashedPassword,
+					Password: req.body.Password,
 					Email: req.body.Email,
 					Birthday: req.body.Birthday,
 				},
@@ -368,8 +366,8 @@ app.post(
 		await Users.findOneAndUpdate(
 			{ Username: req.params.Username },
 			{
-				$addToSet: { FavoriteMovies: req.params.MovieID },
-				
+				$push: { FavoriteMovies: req.params.MovieID },
+				//help
 			},
 			{ new: true }
 		) //Makes sure updated document is returned
