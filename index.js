@@ -38,12 +38,13 @@ app.use(
 );
 
 const cors = require('cors');
-const allowedDomains = [
-	'http://localhost:8080',
-	'http://testsite.com',
-	'http://localhost:1234',
-	'http://my-retroflix.netlify.app',
-];
+const allowedDomains = '*';
+// [
+// 	'http://localhost:8080',
+// 	'http://testsite.com',
+// 	'http://localhost:1234',
+// 	'http://my-retroflix.netlify.app',
+// ];
 
 app.use(
 	cors({
@@ -323,7 +324,6 @@ app.put(
 		await Users.findOneAndUpdate(
 			{ Username: req.params.Username },
 			{
-		
 				$set: {
 					Username: req.body.Username,
 					Password: hashedPassword,
@@ -369,7 +369,6 @@ app.post(
 			{ Username: req.params.Username },
 			{
 				$addToSet: { FavoriteMovies: req.params.MovieID },
-				
 			},
 			{ new: true }
 		) //Makes sure updated document is returned
