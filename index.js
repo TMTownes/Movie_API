@@ -38,29 +38,7 @@ app.use(
 );
 
 const cors = require('cors');
-const allowedDomains = '*';
-// [
-// 	'http://localhost:8080',
-// 	'http://testsite.com',
-// 	'http://localhost:1234',
-// 	'http://my-retroflix.netlify.app',
-// ];
-
-app.use(
-	cors({
-		origin: (origin, callback) => {
-			if (!origin) return callback(null, true);
-			if (allowedDomains.indexOf(origin) === -1) {
-				//if the specific origin is NOT found in allowedDomains
-				let message =
-					('The CORS policy for this appication does not allow access from domain',
-					origin);
-				return callback(new Error(message), false);
-			}
-			return callback(null, true);
-		},
-	})
-);
+app.use(cors());
 
 // app.use((req, res, next) => {
 // 	res.header({ 'Access-Control-Allow-Origins': '*' });
@@ -194,7 +172,7 @@ app.get(
     Email: String,
     Birthday: Date
 } */
-
+const allowedDomains = '*';
 app.post(
 	'/users',
 	[
@@ -320,13 +298,12 @@ app.put(
 		}
 
 		//End Conditions
-		let hashedPassword = Users.hashPassword(req.body.Password);
 		await Users.findOneAndUpdate(
 			{ Username: req.params.Username },
 			{
 				$set: {
 					Username: req.body.Username,
-					Password: hashedPassword,
+					Password: req.body.Password,
 					Email: req.body.Email,
 					Birthday: req.body.Birthday,
 				},
@@ -368,7 +345,8 @@ app.post(
 		await Users.findOneAndUpdate(
 			{ Username: req.params.Username },
 			{
-				$addToSet: { FavoriteMovies: req.params.MovieID },
+				$push: { FavoriteMovies: req.params.MovieID },
+				//help
 			},
 			{ new: true }
 		) //Makes sure updated document is returned
