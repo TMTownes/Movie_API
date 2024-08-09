@@ -183,6 +183,8 @@ app.post(
 		).isAlphanumeric(),
 		check('Password', 'Password is required').not().isEmpty(),
 		check('Email', 'Email does not appear to be valid').isEmail(),
+		/*Add birthdate to updatedUser fields*/
+		check('Birthdate', 'Birthdate does not meet criteria').isDate(),
 	],
 	cors({
 		origin: allowedDomains,
@@ -202,12 +204,16 @@ app.post(
 				if (user) {
 					return res.status(400).send(req.body.Username + ' already exists');
 				} else {
+					// parse the birthday into a Date object
+					const parsedBirthday = new Date(req.body.Birthday);
+
 					Users.create({
 						Username: req.body.Username,
 						Password: hashedPassword,
 						// Password: req.body.Password,
 						Email: req.body.Email,
-						Birthday: req.body.Birthday,
+						Birthday: parsedBirthday,
+						// req.body.Birthday,
 					})
 						.then((user) => {
 							res.status(201).json(user);
@@ -284,6 +290,9 @@ app.put(
 			'Username',
 			'Username contains non alphanumeric characters - not allowed.'
 		).isAlphanumeric(),
+		check('Birthday', 'Birthday does not appear to be valid')
+			.optional()
+			.isDate(),
 	],
 	async (req, res) => {
 		//Conditions Check
@@ -299,6 +308,10 @@ app.put(
 
 		//End Conditions
 		let hashedPassword = Users.hashPassword(req.body.Password);
+		let parsedBirthday = req.body.Birthday
+			? new Date(req.body.Birthday)
+			: undefined;
+
 		await Users.findOneAndUpdate(
 			{ Username: req.params.Username },
 			{
@@ -306,7 +319,8 @@ app.put(
 					Username: req.body.Username,
 					Password: hashedPassword,
 					Email: req.body.Email,
-					Birthday: req.body.Birthday,
+					Birthday: parsedBirthday,
+					// req.body.Birthday,
 				},
 			},
 			{ new: true }
